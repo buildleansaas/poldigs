@@ -3,7 +3,7 @@ import { fetchLegislators } from "../../functions";
 import { LegislatorCard } from "../../components/legislator-card";
 
 export default async function StatePage({ params }) {
-  const state = states.find((s) => s.value.toLowerCase() === params.state);
+  const state = states.find((s) => s.slug.toLowerCase() === params.state);
 
   if (!state) return <div>State not found</div>;
 

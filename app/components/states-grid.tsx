@@ -1,9 +1,6 @@
 import Link from "next/link";
 import { states } from "../states";
-
-function kebabStr(str: string) {
-  return str.replace(/\s+/g, "-").toLowerCase();
-}
+import { kebabStr } from "../utils";
 
 export default function StatesGrid() {
   return (
