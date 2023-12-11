@@ -13,12 +13,6 @@ export default function Page() {
         / United States of America
       </h1>
       <div className="mt-4">
-        <Link
-          href="/united-states/states"
-          className="font-light text-2xl hover:underline hover:text-blue-500"
-        >
-          Explore by State
-        </Link>
         <StatesGrid />
       </div>
     </div>

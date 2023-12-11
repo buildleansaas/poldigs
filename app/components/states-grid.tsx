@@ -9,9 +9,7 @@ export default function StatesGrid() {
         <div key={state.key}>
           <Link
             className="hover:underline text-blue-500 rounded-md"
-            href={`/united-states/states/${kebabStr(
-              state.value.toLowerCase()
-            )}`}
+            href={`/united-states/${kebabStr(state.value.toLowerCase())}`}
           >
             {state.value}
           </Link>

@@ -1,9 +1,6 @@
-import { states } from "../../../../states";
-import { fetchLegislators } from "../../../../functions";
-import {
-  LegislatorCard,
-  LegislatorCards,
-} from "../../../../components/legislator-card";
+import { states } from "../../../states";
+import { fetchLegislators } from "../../../functions";
+import { LegislatorCards } from "../../../components/legislator-card";
 import Link from "next/link";
 
 export default async function StatePage({ params }) {
@@ -29,17 +26,7 @@ export default async function StatePage({ params }) {
             >
               United States of America
             </Link>{" "}
-            /{" "}
-            <Link
-              href="/united-states/states"
-              className="hover:text-blue-500 hover:underline"
-            >
-              States
-            </Link>{" "}
-            /{" "}
-            <Link href={`/united-sates/states/${params.state}`}>
-              {state.value}
-            </Link>{" "}
+            / <Link href={`/united-states/${params.state}`}>{state.value}</Link>{" "}
           </span>
           / Legislators
         </h1>

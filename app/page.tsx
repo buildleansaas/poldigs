@@ -8,12 +8,6 @@ export default function Page() {
         <Link href="/united-states">United States of America</Link>
       </h1>
       <div className="mt-4">
-        <Link
-          href="/united-states/states"
-          className="font-light text-xl hover:underline hover:text-blue-500"
-        >
-          Explore by State
-        </Link>
         <StatesGrid />
       </div>
     </div>
