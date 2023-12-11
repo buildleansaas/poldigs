@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Legislator } from "../types";
 
 import {
@@ -37,12 +38,33 @@ function yearsInOffice(firstElectedYear) {
   return currentYear - firstElectedYear;
 }
 
-export const LegislatorCard: React.FC<{
+function calculateAge(birthdate) {
+  const birthDate = new Date(birthdate);
+  const today = new Date();
+  let age = today.getFullYear() - birthDate.getFullYear();
+  const monthDifference = today.getMonth() - birthDate.getMonth();
+
+  if (
+    monthDifference < 0 ||
+    (monthDifference === 0 && today.getDate() < birthDate.getDate())
+  ) {
+    age--;
+  }
+
+  return age;
+}
+
+function createGoogleMapsLink(address) {
+  const encodedAddress = encodeURIComponent(address);
+  return `https://www.google.com/maps/search/?api=1&query=${encodedAddress}`;
+}
+
+const LegislatorCard: React.FC<{
   legislator: Legislator;
   index: number;
 }> = ({ legislator, index }) => {
   return (
-    <div className="max-w-md rounded overflow-hidden shadow-lg bg-white p-6 m-4">
+    <div className="max-w-md rounded overflow-hidden ring-2 bg-white p-4 space-y-2 w-full">
       <h3 className="font-bold text-xl mb-2">{legislator.firstlast}</h3>
       <div className="flex gap-2">
         <span
@@ -67,59 +89,91 @@ export const LegislatorCard: React.FC<{
       </div>
       <p className="text-sm my-2">
         In Office for {yearsInOffice(legislator.first_elected)} Years
+        {legislator.birthdate && (
+          <>
+            , <span>{calculateAge(legislator.birthdate)} years old.</span>
+          </>
+        )}
       </p>
+
       <div>
-        {legislator.phone && (
-          <p className="flex gap-2 items-center">
-            <BsTelephone /> {legislator.phone}
-          </p>
-        )}
-        {legislator.fax && (
-          <p className="flex gap-2 items-center">
-            <BsPrinter />
-            {legislator.fax}
-          </p>
-        )}
-        {legislator.website && (
-          <a
-            href={legislator.website}
-            className="flex gap-2 items-center hover:underline hover:text-blue-500"
-          >
-            <BsLink /> {legislator.website}
-          </a>
-        )}
-        {legislator.webform && (
-          <a
-            href={legislator.webform}
-            className="flex gap-2 items-center hover:underline hover:text-blue-500"
-          >
-            <BsEnvelope /> {legislator.webform}
-          </a>
-        )}
-        {legislator.congress_office && (
-          <p className="flex gap-2 items-center">
-            <BsMap /> {legislator.congress_office}
-          </p>
-        )}
+        <h3 className="font-bold mb-2">Get in Touch</h3>
+        <div className="grid grid-cols-2 gap-2">
+          {legislator.phone && (
+            <p className="flex gap-2 items-center">
+              <BsTelephone /> {legislator.phone}
+            </p>
+          )}
+          {legislator.fax && (
+            <p className="flex gap-2 items-center">
+              <BsPrinter />
+              {legislator.fax}
+            </p>
+          )}
+          {legislator.website && (
+            <Link
+              target="_blank"
+              href={legislator.website}
+              className="flex gap-2 items-center hover:underline hover:text-blue-500"
+            >
+              <BsLink /> Website
+            </Link>
+          )}
+          {legislator.webform && (
+            <Link
+              target="_blank"
+              href={legislator.webform}
+              className="flex gap-2 items-center hover:underline hover:text-blue-500"
+            >
+              <BsEnvelope /> Contact
+            </Link>
+          )}
+          {legislator.congress_office && (
+            <Link
+              target="_blank"
+              href={createGoogleMapsLink(legislator.congress_office)}
+              className="flex gap-2 items-center hover:underline hover:text-blue-500"
+            >
+              <BsMap /> Office
+            </Link>
+          )}
+        </div>
       </div>
       {/* <p>Bioguide ID: {legislator.bioguide_id}</p> attached as bioguide */}
       {/* <p>VoteSmart ID: {legislator.votesmart_id}</p> https://justfacts.votesmart.org/candidate/biography/15723/donald-trump */}
       {/* <p>FEC Candid: {legislator.feccandid}</p> https://api.open.fec.gov/developers/ */}
       <div>
-        <h3>Social Media</h3>
+        <h3 className="font-bold mb-2">Social Media</h3>
         <div className="flex gap-2">
-          <a href={`https://twitter.com/${legislator.twitter_id}`}>
+          <Link
+            target="_blank"
+            href={`https://twitter.com/${legislator.twitter_id}`}
+          >
             <BsTwitterX />
-          </a>
-          <a href={legislator.youtube_url}>
+          </Link>
+          <Link target="_blank" href={legislator.youtube_url}>
             <BsYoutube />
-          </a>
-          <a href={`https://facebook.com/${legislator.facebook_id}`}>
+          </Link>
+          <Link
+            target="_blank"
+            href={`https://facebook.com/${legislator.facebook_id}`}
+          >
             <BsFacebook />
-          </a>
+          </Link>
         </div>
       </div>
-      {legislator.birthdate && <p>Birthdate: {legislator.birthdate}</p>}
     </div>
   );
 };
+
+export const LegislatorCards = ({
+  legislators,
+}: {
+  legislators: Legislator[];
+}) => (
+  <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mt-4">
+    {legislators.map((legislator, i) => (
+      <LegislatorCard index={i} legislator={legislator} key={legislator.cid} />
+    ))}
+  </div>
+);

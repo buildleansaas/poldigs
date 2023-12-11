@@ -1,10 +1,13 @@
 import { states } from "../../../states";
 import { fetchLegislators } from "../../../functions";
-import { LegislatorCard } from "../../../components/legislator-card";
+import {
+  LegislatorCard,
+  LegislatorCards,
+} from "../../../components/legislator-card";
 import Link from "next/link";
 
 export default async function StatePage({ params }) {
-  const state = states.find((s) => s.value.toLowerCase() === params.state);
+  const state = states.find((s) => s.slug.toLowerCase() === params.state);
 
   if (!state) return <div>State not found</div>;
 
@@ -13,7 +16,7 @@ export default async function StatePage({ params }) {
     const legislators = await fetchLegislators(state.key, apiKey);
 
     return (
-      <div className="p-4">
+      <div className="mt-4">
         <div>
           <h1 className="text-sm">
             <span className="text-gray-500">
@@ -22,25 +25,29 @@ export default async function StatePage({ params }) {
               </Link>{" "}
               /{" "}
               <Link
-                href="/states"
+                href="/united-states"
+                className="hover:text-blue-500 hover:underline"
+              >
+                United States of America
+              </Link>{" "}
+              /{" "}
+              <Link
+                href="/united-states/states"
                 className="hover:text-blue-500 hover:underline"
               >
                 States
               </Link>{" "}
-              / <Link href={`/states/${params.state}`}>{state.value}</Link>{" "}
-            </span>
-            / Legislators
+              /
+            </span>{" "}
+            {state.value}
           </h1>
         </div>
-        <div className="grid gap-8 grid-cols-3">
-          {legislators.map((legislator, i) => (
-            <LegislatorCard
-              index={i}
-              legislator={legislator}
-              key={legislator.cid}
-            />
-          ))}
+        <div className="font-light text-2xl hover:underline hover:text-blue-500 mt-4">
+          <Link href={`/united-states/states/${params.state}/legislators`}>
+            Legislators
+          </Link>
         </div>
+        <LegislatorCards legislators={legislators} />
       </div>
     );
   } catch (error) {
