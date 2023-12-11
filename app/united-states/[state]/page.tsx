@@ -1,9 +1,6 @@
 import { states } from "../../states";
 import { fetchLegislators } from "../../functions";
-import {
-  LegislatorCard,
-  LegislatorCards,
-} from "../../components/legislator-card";
+import { LegislatorCards } from "../../components/legislator-card";
 import Link from "next/link";
 
 export default async function StatePage({ params }) {

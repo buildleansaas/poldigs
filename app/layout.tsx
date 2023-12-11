@@ -6,7 +6,7 @@ import { cn } from "./utils";
 import { Button } from "./components/ui/button";
 import Subscribe from "./components/subscribe";
 
-export const fontSans = FontSans({
+const fontSans = FontSans({
   subsets: ["latin"],
   variable: "--font-sans",
 });
