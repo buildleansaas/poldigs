@@ -1,6 +1,7 @@
 import { states } from "../../../states";
 import { fetchLegislators } from "../../../functions";
 import { LegislatorCard } from "../../../components/legislator-card";
+import Link from "next/link";
 
 export default async function StatePage({ params }) {
   const state = states.find((s) => s.value.toLowerCase() === params.state);
@@ -14,11 +15,30 @@ export default async function StatePage({ params }) {
     return (
       <div className="p-4">
         <div>
-          <h1 className="text-xl">{state.value} Legislators</h1>
+          <h1 className="text-sm">
+            <span className="text-gray-500">
+              <Link href="/" className="hover:text-blue-500 hover:underline">
+                Home
+              </Link>{" "}
+              /{" "}
+              <Link
+                href="/states"
+                className="hover:text-blue-500 hover:underline"
+              >
+                States
+              </Link>{" "}
+              / <Link href={`/states/${params.state}`}>{state.value}</Link>{" "}
+            </span>
+            / Legislators
+          </h1>
         </div>
         <div className="grid gap-8 grid-cols-3">
-          {legislators.map((legislator) => (
-            <LegislatorCard legislator={legislator} key={legislator.cid} />
+          {legislators.map((legislator, i) => (
+            <LegislatorCard
+              index={i}
+              legislator={legislator}
+              key={legislator.cid}
+            />
           ))}
         </div>
       </div>
